@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-base-950 text-slate-200 font-sans antialiased;
+    /* Fine-tuned base gradient wash behind everything */
+    background-image: radial-gradient(
+        70% 50% at 50% -10%,
+        rgba(34, 211, 238, 0.12),
+        transparent 60%
+      ),
+      radial-gradient(50% 40% at 100% 100%, rgba(245, 158, 11, 0.08), transparent 60%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  /* Hide the native cursor on pointer-capable devices — replaced by the custom cursor */
+  @media (hover: hover) and (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
+  }
+
+  ::selection {
+    @apply bg-neon/30 text-white;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+
+  .glass-strong {
+    @apply border border-white/10 bg-white/[0.06] backdrop-blur-2xl;
+  }
+
+  /* Neon gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-neon-soft via-neon to-amber-glow bg-clip-text text-transparent;
+  }
+
+  .section-pad {
+    @apply mx-auto w-full max-w-6xl px-6 py-24 sm:px-8 md:py-32;
+  }
+
+  .eyebrow {
+    @apply mb-4 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-neon;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050608;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#0891b2, #164e63);
+  border-radius: 999px;
+  border: 2px solid #050608;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(#22d3ee, #0891b2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
