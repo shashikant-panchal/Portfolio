@@ -4,7 +4,7 @@ import { education } from '../data/portfolio'
 
 export default function Education() {
   return (
-    <section id="education" className="relative pt-12 pb-12 md:pt-16 md:pb-16">
+    <section id="education" className="relative">
       <div className="section-pad">
         <Reveal>
           <span className="eyebrow">
@@ -18,7 +18,7 @@ export default function Education() {
           </h2>
         </Reveal>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-1">
+        <div className="mt-6 grid gap-4 md:grid-cols-1">
           {education.map((edu, idx) => (
             <Reveal key={edu.degree} delay={idx * 0.1}>
               <div className="group relative overflow-hidden rounded-2xl glass p-6 sm:p-8 transition-all hover:border-amber-glow/40 shadow-card">

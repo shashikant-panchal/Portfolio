@@ -18,7 +18,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
   const [showDeepDive, setShowDeepDive] = useState(false)
 
   return (
-    <div className="grid items-start gap-10 md:grid-cols-2 md:gap-16">
+    <div className="grid items-start gap-6 md:grid-cols-2 md:gap-8">
       {/* Live store preview */}
       <div className={flip ? 'md:order-2' : ''}>
         <StorePreview project={project} />
@@ -26,12 +26,12 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
       {/* Details */}
       <Reveal delay={0.1} className={flip ? 'md:order-1' : ''}>
-        <div className="rounded-2xl glass p-6 sm:p-8">
-          <div className="mb-4 flex items-center gap-3">
+        <div className="rounded-2xl glass p-5 sm:p-6">
+          <div className="mb-3 flex items-center gap-3">
             <span
-              className={`grid h-12 w-12 place-items-center rounded-2xl border ${accent}`}
+              className={`grid h-10 w-10 place-items-center rounded-2xl border ${accent}`}
             >
-              <project.icon size={22} />
+              <project.icon size={20} />
             </span>
             <div>
               <p className={`font-mono text-[11px] uppercase tracking-wider ${accent.split(' ')[0]}`}>
@@ -41,19 +41,19 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
             </div>
           </div>
 
-          <h3 className="font-display text-3xl font-bold text-white sm:text-4xl">
+          <h3 className="font-display text-2xl font-bold text-white sm:text-3xl">
             {project.name}
           </h3>
-          <p className="mt-4 max-w-md leading-relaxed text-slate-300">
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-300">
             {project.summary}
           </p>
 
-          <h4 className="mt-6 font-mono text-xs uppercase tracking-wider text-slate-400">
+          <h4 className="mt-4 font-mono text-xs uppercase tracking-wider text-slate-400">
             Key Architecture &amp; Delivery:
           </h4>
-          <ul className="mt-3 space-y-2.5">
+          <ul className="mt-2 space-y-2">
             {project.highlights.map((h) => (
-              <li key={h} className="flex items-start gap-3 text-xs sm:text-sm text-slate-200">
+              <li key={h} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-200">
                 <Check size={16} className={`mt-0.5 shrink-0 ${accent.split(' ')[0]}`} />
                 <span>{h}</span>
               </li>
@@ -62,7 +62,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
           {/* Deep Dive Accordion */}
           {project.technicalDeepDive && (
-            <div className="mt-6 pt-4 border-t border-white/10">
+            <div className="mt-4 pt-3 border-t border-white/10">
               <button
                 onClick={() => setShowDeepDive((v) => !v)}
                 className={`flex items-center gap-2 font-mono text-xs font-semibold ${accent.split(' ')[0]} hover:text-white transition-colors`}
@@ -83,11 +83,11 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-4 rounded-xl border border-white/10 bg-base-950/70 p-4">
+                    <div className="mt-3 rounded-xl border border-white/10 bg-base-950/70 p-3.5">
                       <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400 mb-2">
                         Native &amp; Engineering Highlights:
                       </p>
-                      <ul className="space-y-2">
+                      <ul className="space-y-1.5">
                         {project.technicalDeepDive.map((item, i) => (
                           <li key={i} className="flex items-start gap-2 text-xs font-mono text-slate-300">
                             <span className="text-neon">•</span>
@@ -103,7 +103,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
           )}
 
           {/* Tech Stack Pills */}
-          <div className="mt-6 flex flex-wrap gap-1.5">
+          <div className="mt-4 flex flex-wrap gap-1.5">
             {project.stack.map((s) => (
               <span
                 key={s}
@@ -121,7 +121,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
 export default function Projects() {
   return (
-    <section id="work" className="relative pt-12 pb-12 md:pt-16 md:pb-16">
+    <section id="work" className="relative">
       <div className="section-pad">
         <Reveal>
           <span className="eyebrow">Featured Production Apps</span>
@@ -132,19 +132,19 @@ export default function Projects() {
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mt-5 max-w-xl text-slate-300">
+          <p className="mt-3 max-w-xl text-slate-300 text-sm sm:text-base">
             Real production cross-platform apps built from scratch and live on the Apple App Store and Google Play Store. Hover or tap to interact.
           </p>
         </Reveal>
 
-        <div className="mt-20 space-y-28">
+        <div className="mt-8 space-y-8">
           {projects.map((p, i) => (
             <motion.div
               key={p.id}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: '-120px' }}
-              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5 }}
             >
               <ProjectRow project={p} index={i} />
             </motion.div>

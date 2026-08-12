@@ -12,7 +12,7 @@ export default function Experience() {
   }
 
   return (
-    <section id="experience" className="relative pt-4 pb-10 md:pt-6 md:pb-12">
+    <section id="experience" className="relative">
       <div className="section-pad">
         <Reveal>
           <span className="eyebrow">
@@ -26,13 +26,13 @@ export default function Experience() {
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mt-5 max-w-2xl text-base text-slate-400 sm:text-lg">
+          <p className="mt-3 max-w-2xl text-base text-slate-400 sm:text-lg">
             4+ years of hands-on experience taking complex client specifications to production, scaling React Native performance, hardening native builds, and setting enterprise standards.
           </p>
         </Reveal>
 
         {/* Timeline Container */}
-        <div className="relative mt-16 space-y-8 before:absolute before:left-4 before:top-3 before:h-[calc(100%-24px)] before:w-0.5 before:bg-gradient-to-b before:from-neon before:via-cyan-500/50 before:to-amber-glow/20 md:before:left-1/2 md:before:-translate-x-1/2">
+        <div className="relative mt-8 space-y-5 before:absolute before:left-4 before:top-3 before:h-[calc(100%-24px)] before:w-0.5 before:bg-gradient-to-b before:from-neon before:via-cyan-500/50 before:to-amber-glow/20 md:before:left-1/2 md:before:-translate-x-1/2">
           {experience.map((item, index) => {
             const isExpanded = expandedIndex === index
             const isEven = index % 2 === 0

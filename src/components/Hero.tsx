@@ -25,13 +25,13 @@ export default function Hero({ onOpenResume }: HeroProps) {
   return (
     <section
       id="top"
-      className="relative flex min-h-[80vh] sm:min-h-[88vh] items-center overflow-hidden pb-12 pt-20 md:pb-16 md:pt-24"
+      className="relative flex items-center overflow-hidden pb-6 md:pb-8"
     >
       {/* Ambient grid + glow backdrop */}
       <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-60" />
       <div className="pointer-events-none absolute inset-0 bg-radial-glow" />
 
-      <div className="section-pad relative z-10 grid items-center gap-10 md:grid-cols-2">
+      <div className="mx-auto w-full max-w-6xl px-6 pt-20 pb-12 sm:px-8 md:pt-24 md:pb-16 relative z-10 grid items-center gap-8 md:grid-cols-2">
         {/* Left — copy */}
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.span
@@ -45,7 +45,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
           <motion.h1
             variants={item}
-            className="font-display text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl"
+            className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
             {profile.firstName}
             <br />
@@ -54,7 +54,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
           <motion.p
             variants={item}
-            className="mt-6 max-w-md text-lg leading-relaxed text-slate-300"
+            className="mt-4 max-w-md text-base sm:text-lg leading-relaxed text-slate-300"
           >
             Senior{' '}
             <span className="font-medium text-neon">
@@ -64,11 +64,11 @@ export default function Hero({ onOpenResume }: HeroProps) {
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
+          <motion.div variants={item} className="mt-6 flex flex-wrap items-center gap-3">
             <Magnetic>
               <a
                 href="#work"
-                className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-neon to-neon-deep px-6 py-3.5 font-semibold text-base-950 shadow-glow transition-transform"
+                className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-neon to-neon-deep px-5 py-3 font-semibold text-base-950 shadow-glow transition-transform"
               >
                 View production work
                 <ArrowDown
@@ -82,7 +82,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 <button
                   onClick={onOpenResume}
                   data-cursor="hover"
-                  className="flex cursor-pointer items-center gap-2 rounded-xl border border-neon/40 bg-neon/10 px-5 py-3.5 font-semibold text-neon transition-colors hover:bg-neon hover:text-base-950"
+                  className="flex cursor-pointer items-center gap-2 rounded-xl border border-neon/40 bg-neon/10 px-4 py-3 font-semibold text-neon transition-colors hover:bg-neon hover:text-base-950"
                 >
                   <FileText size={18} />
                   <span>View Resume</span>
@@ -92,7 +92,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
             <Magnetic>
               <a
                 href="#contact"
-                className="rounded-xl border border-white/15 px-5 py-3.5 font-semibold text-white transition-colors hover:border-neon/50 hover:text-neon"
+                className="rounded-xl border border-white/15 px-4 py-3 font-semibold text-white transition-colors hover:border-neon/50 hover:text-neon"
               >
                 Get in touch
               </a>
@@ -101,7 +101,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
         </motion.div>
 
         {/* Right — 3D + portrait */}
-        <div className="relative h-[380px] sm:h-[460px] md:h-[560px]">
+        <div className="relative h-[320px] sm:h-[400px] md:h-[480px]">
           <ErrorBoundary>
             <Suspense
               fallback={
@@ -129,15 +129,15 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 <img
                   src={profile.image}
                   alt={profile.name}
-                  className="h-56 w-44 rounded-[1.5rem] object-cover object-top ring-2 ring-white/15 sm:h-60 sm:w-44 md:h-64 md:w-50"
+                  className="h-48 w-38 rounded-[1.5rem] object-cover object-top ring-2 ring-white/15 sm:h-52 sm:w-40 md:h-56 md:w-44"
                   loading="eager"
                 />
                 {/* Name plate */}
-                <div className="absolute inset-x-2 bottom-2 rounded-b-[1.5rem] rounded-t-lg bg-gradient-to-t from-base-950/95 via-base-950/80 to-transparent px-3.5 pb-3.5 pt-7">
-                  <p className="text-base font-bold leading-tight text-white sm:text-lg">
+                <div className="absolute inset-x-2 bottom-2 rounded-b-[1.5rem] rounded-t-lg bg-gradient-to-t from-base-950/95 via-base-950/80 to-transparent px-3 pb-3 pt-6">
+                  <p className="text-sm font-bold leading-tight text-white sm:text-base">
                     {profile.name}
                   </p>
-                  <p className="font-mono text-xs font-semibold text-neon mt-0.5">{profile.role}</p>
+                  <p className="font-mono text-[11px] font-semibold text-neon mt-0.5">{profile.role}</p>
                 </div>
               </div>
             </div>

@@ -71,9 +71,9 @@ export default function Contact() {
     'w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-white placeholder:text-slate-500 outline-none transition-colors focus:border-neon/60 focus:bg-white/[0.05] disabled:opacity-60'
 
   return (
-    <section id="contact" className="relative pt-12 pb-16 md:pt-16 md:pb-20">
+    <section id="contact" className="relative">
       <div className="section-pad">
-        <div className="grid gap-12 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2">
           {/* Left — pitch + links */}
           <div>
             <Reveal>
@@ -87,7 +87,7 @@ export default function Contact() {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-6 max-w-md text-lg leading-relaxed text-slate-300">
+              <p className="mt-4 max-w-md text-base sm:text-lg leading-relaxed text-slate-300">
                 Have a mobile product in mind, or a native engineering problem to
                 solve? Send a message directly to{' '}
                 <button
@@ -104,7 +104,7 @@ export default function Contact() {
 
             {/* Quick Email Copy Chip */}
             <Reveal delay={0.12}>
-              <div className="mt-4 inline-flex items-center gap-3 rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5">
+              <div className="mt-3 inline-flex items-center gap-3 rounded-xl border border-neon/30 bg-neon/10 px-3.5 py-2">
                 <Mail size={16} className="text-neon" />
                 <span className="font-mono text-xs text-white">{profile.email}</span>
                 <button
@@ -119,18 +119,18 @@ export default function Contact() {
             </Reveal>
 
             <Reveal delay={0.15}>
-              <div className="mt-8 space-y-3">
+              <div className="mt-5 space-y-2.5">
                 {contactChannels.map((c) => {
                   const inner = (
                     <>
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-neon/10 text-neon">
-                        <c.icon size={16} />
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-neon/10 text-neon">
+                        <c.icon size={15} />
                       </span>
                       <span className="leading-tight">
                         <span className="block font-mono text-[10px] uppercase tracking-wider text-slate-400">
                           {c.label}
                         </span>
-                        <span className="block text-sm font-medium text-slate-200">{c.value}</span>
+                        <span className="block text-xs sm:text-sm font-medium text-slate-200">{c.value}</span>
                       </span>
                     </>
                   )
@@ -138,7 +138,7 @@ export default function Contact() {
                     <a
                       key={c.label}
                       href={c.href}
-                      className="flex items-center gap-3 rounded-xl glass px-3.5 py-2.5 transition-colors hover:border-neon/40"
+                      className="flex items-center gap-3 rounded-xl glass px-3 py-2 transition-colors hover:border-neon/40"
                       data-cursor="hover"
                     >
                       {inner}
@@ -146,7 +146,7 @@ export default function Contact() {
                   ) : (
                     <div
                       key={c.label}
-                      className="flex items-center gap-3 rounded-xl glass px-3.5 py-2.5"
+                      className="flex items-center gap-3 rounded-xl glass px-3 py-2"
                     >
                       {inner}
                     </div>
@@ -156,7 +156,7 @@ export default function Contact() {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="mt-8 flex gap-3">
+              <div className="mt-5 flex gap-3">
                 {socials.map((s) => (
                   <Magnetic key={s.label}>
                     <a
@@ -165,9 +165,9 @@ export default function Contact() {
                       rel="noreferrer"
                       aria-label={s.label}
                       data-cursor="hover"
-                      className="grid h-12 w-12 place-items-center rounded-xl glass text-slate-300 transition-colors hover:border-neon/50 hover:text-neon"
+                      className="grid h-10 w-10 place-items-center rounded-xl glass text-slate-300 transition-colors hover:border-neon/50 hover:text-neon"
                     >
-                      <s.icon size={20} />
+                      <s.icon size={18} />
                     </a>
                   </Magnetic>
                 ))}
