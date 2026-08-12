@@ -10,13 +10,16 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    // Split the heavy 3D + animation libs into their own chunks so the
-    // initial HTML paints fast and the scene streams in behind it.
+    chunkSizeWarningLimit: 1200,
+    // Split vendor, 3D, and animation libraries into dedicated chunks so the initial HTML paints fast.
     rollupOptions: {
       output: {
         manualChunks: {
-          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          vendor: ['react', 'react-dom'],
+          three: ['three'],
+          r3f: ['@react-three/fiber', '@react-three/drei'],
           motion: ['framer-motion'],
+          icons: ['lucide-react'],
         },
       },
     },
