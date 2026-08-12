@@ -1,35 +1,33 @@
 import { useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { Send, Check, Loader2, AlertCircle } from 'lucide-react'
-import emailjs from '@emailjs/browser'
+import { Send, Check, Loader2, AlertCircle, Copy, Mail } from 'lucide-react'
 import Reveal from './ui/Reveal'
 import Magnetic from './ui/Magnetic'
 import { profile, socials, contactChannels } from '../data/portfolio'
-
-// EmailJS config — pulled from env, with your service ID as the default.
-const EMAILJS = {
-  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_wnks15x',
-  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
-}
-const emailjsReady = Boolean(EMAILJS.serviceId && EMAILJS.templateId && EMAILJS.publicKey)
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [status, setStatus] = useState<Status>('idle')
+  const [copied, setCopied] = useState(false)
 
-  const resetLater = () => window.setTimeout(() => setStatus('idle'), 4500)
+  const resetLater = () => window.setTimeout(() => setStatus('idle'), 5000)
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText(profile.email)
+    setCopied(true)
+    window.setTimeout(() => setCopied(false), 2500)
+  }
 
   const sendViaMailto = () => {
-    // Fallback so the form always works, even before EmailJS keys are set.
     const subject = encodeURIComponent(`Portfolio enquiry from ${form.name}`)
     const body = encodeURIComponent(
-      `${form.message}\n\n— ${form.name}\n${form.email}`,
+      `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`,
     )
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`
+    window.open(`mailto:${profile.email}?subject=${subject}&body=${body}`, '_blank')
     setStatus('sent')
+    setForm({ name: '', email: '', message: '' })
     resetLater()
   }
 
@@ -37,33 +35,35 @@ export default function Contact() {
     e.preventDefault()
     if (status === 'sending') return
 
-    if (!emailjsReady) {
-      sendViaMailto()
-      return
-    }
-
     setStatus('sending')
     try {
-      await emailjs.send(
-        EMAILJS.serviceId,
-        EMAILJS.templateId,
-        {
-          // These keys must match the variables in your EmailJS template.
-          from_name: form.name,
-          from_email: form.email,
-          reply_to: form.email,
-          to_name: profile.firstName,
-          message: form.message,
+      // Use FormSubmit AJAX endpoint directly to shashikantpanchal499@gmail.com
+      const res = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
-        { publicKey: EMAILJS.publicKey },
-      )
-      setStatus('sent')
-      setForm({ name: '', email: '', message: '' })
-      resetLater()
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          _subject: `New Portfolio Enquiry from ${form.name}`,
+          _template: 'table',
+        }),
+      })
+
+      if (res.ok) {
+        setStatus('sent')
+        setForm({ name: '', email: '', message: '' })
+        resetLater()
+      } else {
+        // Fallback to mailto
+        sendViaMailto()
+      }
     } catch (err) {
-      console.error('EmailJS send failed:', err)
-      setStatus('error')
-      resetLater()
+      console.warn('FormSubmit failed, falling back to mailto:', err)
+      sendViaMailto()
     }
   }
 
@@ -71,13 +71,13 @@ export default function Contact() {
     'w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-white placeholder:text-slate-500 outline-none transition-colors focus:border-neon/60 focus:bg-white/[0.05] disabled:opacity-60'
 
   return (
-    <section id="contact" className="relative">
+    <section id="contact" className="relative pt-12 pb-16 md:pt-16 md:pb-20">
       <div className="section-pad">
         <div className="grid gap-12 md:grid-cols-2">
           {/* Left — pitch + links */}
           <div>
             <Reveal>
-              <span className="eyebrow">Contact</span>
+              <span className="eyebrow">Get in Touch</span>
             </Reveal>
             <Reveal delay={0.05}>
               <h2 className="font-display text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
@@ -87,10 +87,35 @@ export default function Contact() {
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-6 max-w-md text-lg leading-relaxed text-slate-400">
-                Have a mobile product in mind, or a tricky native problem to
-                solve? I&apos;m open to collaborations and freelance work.
+              <p className="mt-6 max-w-md text-lg leading-relaxed text-slate-300">
+                Have a mobile product in mind, or a native engineering problem to
+                solve? Send a message directly to{' '}
+                <button
+                  onClick={copyEmail}
+                  className="font-mono text-sm font-semibold text-neon underline hover:text-white transition-colors"
+                  title="Click to copy email"
+                  data-cursor="hover"
+                >
+                  {profile.email}
+                </button>
+                .
               </p>
+            </Reveal>
+
+            {/* Quick Email Copy Chip */}
+            <Reveal delay={0.12}>
+              <div className="mt-4 inline-flex items-center gap-3 rounded-xl border border-neon/30 bg-neon/10 px-4 py-2.5">
+                <Mail size={16} className="text-neon" />
+                <span className="font-mono text-xs text-white">{profile.email}</span>
+                <button
+                  onClick={copyEmail}
+                  data-cursor="hover"
+                  className="flex items-center gap-1 rounded-lg bg-neon/20 px-2.5 py-1 font-mono text-[11px] font-semibold text-neon hover:bg-neon hover:text-base-950 transition-all"
+                >
+                  {copied ? <Check size={13} /> : <Copy size={13} />}
+                  <span>{copied ? 'Copied!' : 'Copy'}</span>
+                </button>
+              </div>
             </Reveal>
 
             <Reveal delay={0.15}>
@@ -102,10 +127,10 @@ export default function Contact() {
                         <c.icon size={16} />
                       </span>
                       <span className="leading-tight">
-                        <span className="block font-mono text-[10px] uppercase tracking-wider text-slate-500">
+                        <span className="block font-mono text-[10px] uppercase tracking-wider text-slate-400">
                           {c.label}
                         </span>
-                        <span className="block text-sm text-slate-200">{c.value}</span>
+                        <span className="block text-sm font-medium text-slate-200">{c.value}</span>
                       </span>
                     </>
                   )
@@ -113,7 +138,7 @@ export default function Contact() {
                     <a
                       key={c.label}
                       href={c.href}
-                      className="flex items-center gap-3 rounded-xl glass px-3 py-2.5 transition-colors hover:border-neon/40"
+                      className="flex items-center gap-3 rounded-xl glass px-3.5 py-2.5 transition-colors hover:border-neon/40"
                       data-cursor="hover"
                     >
                       {inner}
@@ -121,7 +146,7 @@ export default function Contact() {
                   ) : (
                     <div
                       key={c.label}
-                      className="flex items-center gap-3 rounded-xl glass px-3 py-2.5"
+                      className="flex items-center gap-3 rounded-xl glass px-3.5 py-2.5"
                     >
                       {inner}
                     </div>
@@ -139,6 +164,7 @@ export default function Contact() {
                       target={s.href.startsWith('http') ? '_blank' : undefined}
                       rel="noreferrer"
                       aria-label={s.label}
+                      data-cursor="hover"
                       className="grid h-12 w-12 place-items-center rounded-xl glass text-slate-300 transition-colors hover:border-neon/50 hover:text-neon"
                     >
                       <s.icon size={20} />
@@ -155,38 +181,45 @@ export default function Contact() {
               onSubmit={handleSubmit}
               className="rounded-3xl glass-strong p-6 shadow-card sm:p-8"
             >
+              <h3 className="font-display text-xl font-bold text-white mb-2">
+                Send Direct Email Message
+              </h3>
+              <p className="text-xs text-slate-400 mb-6 font-mono">
+                Messages deliver directly to {profile.email}
+              </p>
+
               <fieldset
                 disabled={status === 'sending'}
                 className="space-y-4"
               >
                 <div>
                   <label className="mb-1.5 block font-mono text-xs uppercase tracking-wider text-slate-400">
-                    Name
+                    Your Name
                   </label>
                   <input
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    placeholder="Jane Doe"
+                    placeholder="John Doe"
                     className={field}
                   />
                 </div>
                 <div>
                   <label className="mb-1.5 block font-mono text-xs uppercase tracking-wider text-slate-400">
-                    Email
+                    Your Email Address
                   </label>
                   <input
                     required
                     type="email"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder="jane@company.com"
+                    placeholder="john@company.com"
                     className={field}
                   />
                 </div>
                 <div>
                   <label className="mb-1.5 block font-mono text-xs uppercase tracking-wider text-slate-400">
-                    Message
+                    Your Message
                   </label>
                   <textarea
                     required
@@ -195,7 +228,7 @@ export default function Contact() {
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    placeholder="Tell me about your project…"
+                    placeholder="Hi Shashikant, I'd like to discuss a mobile project..."
                     className={`${field} resize-none`}
                   />
                 </div>
@@ -206,42 +239,31 @@ export default function Contact() {
                   type="submit"
                   disabled={status === 'sending'}
                   whileTap={{ scale: 0.98 }}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-neon to-neon-deep py-3.5 font-semibold text-base-950 shadow-glow disabled:opacity-70"
+                  className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-neon to-neon-deep py-3.5 font-semibold text-base-950 shadow-glow disabled:opacity-70"
                   data-cursor="hover"
                 >
                   {status === 'sending' && (
                     <>
-                      <Loader2 size={18} className="animate-spin" /> Sending…
+                      <Loader2 size={18} className="animate-spin" /> Sending to {profile.email}…
                     </>
                   )}
                   {status === 'sent' && (
                     <>
-                      <Check size={18} />{' '}
-                      {emailjsReady ? 'Message sent — thank you!' : 'Opening your mail app…'}
+                      <Check size={18} /> Message sent to {profile.email}!
                     </>
                   )}
                   {status === 'error' && (
                     <>
-                      <AlertCircle size={18} /> Something went wrong — retry
+                      <AlertCircle size={18} /> Opening Mail App…
                     </>
                   )}
                   {status === 'idle' && (
                     <>
-                      Send message <Send size={18} />
+                      Send Message to {profile.firstName} <Send size={18} />
                     </>
                   )}
                 </motion.button>
               </Magnetic>
-
-              {status === 'error' && (
-                <p className="mt-3 text-center text-xs text-rose-400">
-                  Couldn&apos;t send just now. You can also email me directly at{' '}
-                  <a href={`mailto:${profile.email}`} className="underline">
-                    {profile.email}
-                  </a>
-                  .
-                </p>
-              )}
             </form>
           </Reveal>
         </div>
@@ -249,3 +271,4 @@ export default function Contact() {
     </section>
   )
 }
+

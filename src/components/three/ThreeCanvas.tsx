@@ -4,18 +4,111 @@ import {
   Float,
   Icosahedron,
   MeshDistortMaterial,
-  Environment,
   Sparkles,
   RoundedBox,
+  Sphere,
+  Octahedron,
 } from '@react-three/drei'
 import * as THREE from 'three'
 
 /**
- * The morphing hero mesh. An icosahedron wrapped in a distortion material that
- * breathes on its own and leans toward the pointer, wrapped in a wireframe
- * shell for a "digital core" look.
+ * Floating 3D Code / Tech Block:
+ * Sleek metallic dark glass cube with glowing neon borders and emissive accents
+ * representing software components (APIs, Code, Cloud, Auth, CI/CD).
  */
-function MorphingCore() {
+function SoftwareBlock({
+  position,
+  color,
+  rotation = [0, 0, 0],
+  scale = 1,
+}: {
+  position: [number, number, number]
+  color: string
+  rotation?: [number, number, number]
+  scale?: number
+}) {
+  const meshRef = useRef<THREE.Group>(null)
+
+  useFrame((state) => {
+    if (!meshRef.current) return
+    meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.8) * 0.1
+    meshRef.current.rotation.y += 0.005
+  })
+
+  return (
+    <group ref={meshRef} position={position} rotation={rotation} scale={scale}>
+      <Float speed={2.5} rotationIntensity={1.0} floatIntensity={1.2}>
+        {/* Outer Dark Metallic Glass Cube */}
+        <RoundedBox args={[0.7, 0.7, 0.7]} radius={0.12} smoothness={4}>
+          <meshStandardMaterial
+            color="#090d16"
+            metalness={0.9}
+            roughness={0.2}
+            emissive={color}
+            emissiveIntensity={0.25}
+          />
+        </RoundedBox>
+
+        {/* Wireframe Holographic Border */}
+        <RoundedBox args={[0.74, 0.74, 0.74]} radius={0.13} smoothness={4}>
+          <meshBasicMaterial color={color} wireframe transparent opacity={0.4} />
+        </RoundedBox>
+
+        {/* Inner Glowing Core Energy */}
+        <Octahedron args={[0.22, 0]}>
+          <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.8} />
+        </Octahedron>
+      </Float>
+    </group>
+  )
+}
+
+/**
+ * Connected 3D Microservice Node:
+ * Glowing server node sphere with orbiting satellite points.
+ */
+function ServerNode({ position, color }: { position: [number, number, number]; color: string }) {
+  const nodeRef = useRef<THREE.Group>(null)
+
+  useFrame((state) => {
+    if (!nodeRef.current) return
+    nodeRef.current.rotation.y = state.clock.elapsedTime * 0.5
+  })
+
+  return (
+    <group ref={nodeRef} position={position}>
+      <Float speed={3} rotationIntensity={1.5} floatIntensity={1.0}>
+        <Sphere args={[0.18, 32, 32]}>
+          <meshStandardMaterial
+            color={color}
+            emissive={color}
+            emissiveIntensity={0.6}
+            roughness={0.2}
+            metalness={0.8}
+          />
+        </Sphere>
+
+        {/* Orbiting Satellite Node 1 */}
+        <mesh position={[0.35, 0, 0]}>
+          <sphereGeometry args={[0.045, 16, 16]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+
+        {/* Orbiting Satellite Node 2 */}
+        <mesh position={[-0.35, 0, 0]}>
+          <sphereGeometry args={[0.045, 16, 16]} />
+          <meshBasicMaterial color={color} />
+        </mesh>
+      </Float>
+    </group>
+  )
+}
+
+/**
+ * Central Software Architecture Core:
+ * Morphing quantum engine representing software design, algorithms & systems.
+ */
+function ArchitectureCore() {
   const group = useRef<THREE.Group>(null)
   const inner = useRef<THREE.Mesh>(null)
   const { pointer } = useThree()
@@ -32,183 +125,121 @@ function MorphingCore() {
     )
     group.current.rotation.y = THREE.MathUtils.damp(
       group.current.rotation.y,
-      targetY + state.clock.elapsedTime * 0.15,
+      targetY + state.clock.elapsedTime * 0.2,
       3,
       delta,
     )
     if (inner.current) {
-      const s = 1 + Math.sin(state.clock.elapsedTime * 1.5) * 0.03
+      const s = 1 + Math.sin(state.clock.elapsedTime * 1.8) * 0.05
       inner.current.scale.setScalar(s)
     }
   })
 
   return (
     <group ref={group}>
-      <Float speed={2} rotationIntensity={0.4} floatIntensity={0.8}>
-        <Icosahedron ref={inner} args={[1.15, 12]}>
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.8}>
+        {/* Main Quantum Engine Sphere */}
+        <Icosahedron ref={inner} args={[1.05, 12]}>
           <MeshDistortMaterial
-            color="#0e7490"
-            emissive="#22d3ee"
-            emissiveIntensity={0.25}
+            color="#0284c7"
+            emissive="#38bdf8"
+            emissiveIntensity={0.4}
             roughness={0.15}
             metalness={0.9}
-            distort={0.4}
-            speed={2.2}
+            distort={0.42}
+            speed={2.4}
           />
         </Icosahedron>
-        <Icosahedron args={[1.5, 2]}>
-          <meshBasicMaterial color="#22d3ee" wireframe transparent opacity={0.16} />
+
+        {/* Double Holographic System Rings */}
+        <Icosahedron args={[1.4, 2]}>
+          <meshBasicMaterial color="#38bdf8" wireframe transparent opacity={0.25} />
+        </Icosahedron>
+
+        <Icosahedron args={[1.75, 3]}>
+          <meshBasicMaterial color="#f59e0b" wireframe transparent opacity={0.15} />
         </Icosahedron>
       </Float>
     </group>
   )
 }
 
-/** A stylised smartphone: metallic body + glowing screen + camera notch. */
-function Phone({ screen }: { screen: string }) {
-  return (
-    <group>
-      {/* Body */}
-      <RoundedBox args={[0.62, 1.24, 0.07]} radius={0.09} smoothness={4}>
-        <meshStandardMaterial color="#0d1117" metalness={0.85} roughness={0.35} />
-      </RoundedBox>
-      {/* Glowing screen */}
-      <mesh position={[0, 0, 0.041]}>
-        <planeGeometry args={[0.52, 1.08]} />
-        <meshStandardMaterial
-          color={screen}
-          emissive={screen}
-          emissiveIntensity={0.7}
-          toneMapped={false}
-        />
-      </mesh>
-      {/* On-screen "app bar" accent */}
-      <mesh position={[0, 0.42, 0.043]}>
-        <planeGeometry args={[0.52, 0.16]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.18} />
-      </mesh>
-      {/* Home indicator */}
-      <mesh position={[0, -0.46, 0.043]}>
-        <planeGeometry args={[0.18, 0.03]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.5} />
-      </mesh>
-      {/* Camera notch */}
-      <mesh position={[0, 0.52, 0.045]}>
-        <circleGeometry args={[0.02, 16]} />
-        <meshBasicMaterial color="#000000" />
-      </mesh>
-    </group>
-  )
-}
-
-/** Small floating app-icon tile with a rounded, glowing face. */
-function AppTile({ color }: { color: string }) {
-  return (
-    <RoundedBox args={[0.34, 0.34, 0.08]} radius={0.09} smoothness={4}>
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.5}
-        metalness={0.3}
-        roughness={0.4}
-        toneMapped={false}
-      />
-    </RoundedBox>
-  )
-}
-
 /**
- * Devices orbiting the core — the mobile-development motif. The whole ring
- * slowly rotates and leans with the pointer; each device also floats and spins
- * on its own for depth.
+ * Orbiting Software Matrix:
+ * System blocks (Code, API, Cloud, Security, CI/CD) drifting in 3D space.
  */
-function OrbitingDevices() {
-  const ring = useRef<THREE.Group>(null)
+function SoftwareMatrix() {
+  const matrixGroup = useRef<THREE.Group>(null)
   const { pointer } = useThree()
 
-  const phones = useMemo(
+  const blocks = useMemo(
     () => [
-      { screen: '#22d3ee', radius: 2.7, angle: 0, y: 0.25, tilt: 0.4 },
-      { screen: '#f59e0b', radius: 2.7, angle: (Math.PI * 2) / 3, y: -0.35, tilt: -0.5 },
-      { screen: '#a78bfa', radius: 2.7, angle: (Math.PI * 4) / 3, y: 0.1, tilt: 0.2 },
+      { pos: [-2.1, 1.1, 0.4] as [number, number, number], color: '#38bdf8', rot: [0.2, 0.4, 0] as [number, number, number], scale: 1.1 }, // Code/Frontend
+      { pos: [2.1, -1.0, 0.4] as [number, number, number], color: '#f59e0b', rot: [-0.3, -0.2, 0.1] as [number, number, number], scale: 1.1 }, // Cloud/Backend
+      { pos: [-1.9, -1.2, 0.6] as [number, number, number], color: '#10b981', rot: [0.1, -0.3, 0.2] as [number, number, number], scale: 1.0 }, // Database/Supabase
+      { pos: [2.0, 1.2, 0.5] as [number, number, number], color: '#a855f7', rot: [-0.2, 0.3, -0.1] as [number, number, number], scale: 1.0 }, // Security/SSO
+      { pos: [0, 1.8, -0.2] as [number, number, number], color: '#ec4899', rot: [0.4, 0.1, 0] as [number, number, number], scale: 0.95 }, // Realtime/WebSockets
+      { pos: [0, -1.8, -0.2] as [number, number, number], color: '#6366f1', rot: [-0.4, -0.1, 0] as [number, number, number], scale: 0.95 }, // CI/CD Pipelines
     ],
     [],
   )
 
-  const tiles = useMemo(
+  const nodes = useMemo(
     () => [
-      { color: '#22d3ee', radius: 2.0, angle: 0.6, y: 0.9 },
-      { color: '#34d399', radius: 2.1, angle: 1.9, y: -0.9 },
-      { color: '#f59e0b', radius: 1.95, angle: 3.1, y: 1.0 },
-      { color: '#f472b6', radius: 2.05, angle: 4.3, y: -0.7 },
-      { color: '#60a5fa', radius: 2.0, angle: 5.4, y: 0.6 },
+      { pos: [-1.1, 0.4, 1.2] as [number, number, number], color: '#38bdf8' },
+      { pos: [1.2, 0.5, 1.1] as [number, number, number], color: '#f59e0b' },
+      { pos: [1.1, -0.6, 1.2] as [number, number, number], color: '#10b981' },
+      { pos: [-1.2, -0.5, 1.1] as [number, number, number], color: '#a855f7' },
     ],
     [],
   )
 
   useFrame((_, delta) => {
-    if (!ring.current) return
-    ring.current.rotation.y += delta * 0.18
-    // Gentle lean toward the pointer.
-    ring.current.rotation.x = THREE.MathUtils.damp(
-      ring.current.rotation.x,
-      pointer.y * 0.25 + 0.15,
+    if (!matrixGroup.current) return
+    matrixGroup.current.rotation.y = THREE.MathUtils.damp(
+      matrixGroup.current.rotation.y,
+      pointer.x * 0.4,
       2.5,
       delta,
     )
-    ring.current.rotation.z = THREE.MathUtils.damp(
-      ring.current.rotation.z,
-      -pointer.x * 0.12,
+    matrixGroup.current.rotation.x = THREE.MathUtils.damp(
+      matrixGroup.current.rotation.x,
+      -pointer.y * 0.28 + 0.08,
       2.5,
       delta,
     )
   })
 
   return (
-    <group ref={ring}>
-      {phones.map((p, i) => (
-        <group
-          key={`phone-${i}`}
-          position={[
-            Math.cos(p.angle) * p.radius,
-            p.y,
-            Math.sin(p.angle) * p.radius,
-          ]}
-          rotation={[0, -p.angle + Math.PI / 2, p.tilt]}
-        >
-          <Float speed={2.5} rotationIntensity={0.6} floatIntensity={0.9}>
-            <Phone screen={p.screen} />
-          </Float>
-        </group>
+    <group ref={matrixGroup}>
+      {/* 3D Software Component Cubes */}
+      {blocks.map((b, i) => (
+        <SoftwareBlock
+          key={i}
+          position={b.pos}
+          color={b.color}
+          rotation={b.rot}
+          scale={b.scale}
+        />
       ))}
 
-      {tiles.map((t, i) => (
-        <group
-          key={`tile-${i}`}
-          position={[
-            Math.cos(t.angle) * t.radius,
-            t.y,
-            Math.sin(t.angle) * t.radius,
-          ]}
-        >
-          <Float speed={3} rotationIntensity={1.2} floatIntensity={1.2}>
-            <AppTile color={t.color} />
-          </Float>
-        </group>
+      {/* 3D Interconnected Microservice Nodes */}
+      {nodes.map((n, i) => (
+        <ServerNode key={i} position={n.pos} color={n.color} />
       ))}
     </group>
   )
 }
 
-/** Slow-drifting particle field for depth. */
-function Particles() {
+/** Digital matrix particle cloud for atmosphere. */
+function DigitalMatrixField() {
   const points = useMemo(() => {
-    const count = 140
+    const count = 180
     const positions = new Float32Array(count * 3)
     for (let i = 0; i < count; i++) {
       const phi = Math.acos(1 - (2 * (i + 0.5)) / count)
       const theta = Math.PI * (1 + Math.sqrt(5)) * i
-      const r = 4 + (i % 5) * 0.35
+      const r = 4.2 + (i % 6) * 0.4
       positions[i * 3] = r * Math.sin(phi) * Math.cos(theta)
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
       positions[i * 3 + 2] = r * Math.cos(phi)
@@ -218,7 +249,7 @@ function Particles() {
 
   const ref = useRef<THREE.Points>(null)
   useFrame((_, delta) => {
-    if (ref.current) ref.current.rotation.y += delta * 0.02
+    if (ref.current) ref.current.rotation.y += delta * 0.025
   })
 
   return (
@@ -232,10 +263,10 @@ function Particles() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.035}
-        color="#67e8f9"
+        size={0.04}
+        color="#38bdf8"
         transparent
-        opacity={0.6}
+        opacity={0.65}
         sizeAttenuation
       />
     </points>
@@ -247,27 +278,28 @@ export default function ThreeCanvas() {
     <Canvas
       className="!absolute inset-0"
       dpr={[1, 2]}
-      camera={{ position: [0, 0, 7], fov: 42 }}
+      camera={{ position: [0, 0, 6.8], fov: 44 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
     >
       <Suspense fallback={null}>
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[5, 5, 5]} intensity={1.6} color="#22d3ee" />
-        <directionalLight position={[-5, -3, 2]} intensity={0.8} color="#f59e0b" />
-        <pointLight position={[0, 0, 3]} intensity={2} color="#67e8f9" />
+        <ambientLight intensity={0.6} />
+        <hemisphereLight intensity={0.5} color="#38bdf8" groundColor="#020617" />
+        <directionalLight position={[5, 6, 5]} intensity={2.2} color="#38bdf8" />
+        <directionalLight position={[-5, -4, 3]} intensity={1.5} color="#f59e0b" />
+        <pointLight position={[0, 0, 4]} intensity={3.0} color="#c084fc" />
 
-        <MorphingCore />
-        <OrbitingDevices />
-        <Particles />
+        <ArchitectureCore />
+        <SoftwareMatrix />
+        <DigitalMatrixField />
+
         <Sparkles
-          count={40}
-          scale={7}
-          size={2}
-          speed={0.3}
-          color="#f59e0b"
-          opacity={0.5}
+          count={50}
+          scale={8}
+          size={2.5}
+          speed={0.4}
+          color="#38bdf8"
+          opacity={0.6}
         />
-        <Environment preset="night" />
       </Suspense>
     </Canvas>
   )

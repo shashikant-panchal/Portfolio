@@ -1,8 +1,9 @@
 import { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowDown, Sparkles } from 'lucide-react'
+import { ArrowDown, Sparkles, FileText } from 'lucide-react'
 import Magnetic from './ui/Magnetic'
-import { profile, techStack } from '../data/portfolio'
+import ErrorBoundary from './ui/ErrorBoundary'
+import { profile } from '../data/portfolio'
 
 // The 3D scene is code-split so the hero copy paints instantly.
 const ThreeCanvas = lazy(() => import('./three/ThreeCanvas'))
@@ -16,17 +17,21 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 }
 
-export default function Hero() {
+interface HeroProps {
+  onOpenResume?: () => void
+}
+
+export default function Hero({ onOpenResume }: HeroProps) {
   return (
     <section
       id="top"
-      className="relative flex min-h-screen items-center overflow-hidden"
+      className="relative flex min-h-[80vh] sm:min-h-[88vh] items-center overflow-hidden pb-12 pt-20 md:pb-16 md:pt-24"
     >
       {/* Ambient grid + glow backdrop */}
       <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-60" />
       <div className="pointer-events-none absolute inset-0 bg-radial-glow" />
 
-      <div className="section-pad relative z-10 grid items-center gap-12 pt-28 md:grid-cols-2 md:pt-24">
+      <div className="section-pad relative z-10 grid items-center gap-10 md:grid-cols-2">
         {/* Left — copy */}
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.span
@@ -35,7 +40,7 @@ export default function Hero() {
             data-cursor="hover"
           >
             <Sparkles size={14} />
-            {profile.experienceYears}+ years of mobile mastery
+            {profile.experienceYears}+ years of software engineering
           </motion.span>
 
           <motion.h1
@@ -49,97 +54,91 @@ export default function Hero() {
 
           <motion.p
             variants={item}
-            className="mt-6 max-w-md text-lg leading-relaxed text-slate-400"
+            className="mt-6 max-w-md text-lg leading-relaxed text-slate-300"
           >
-            Specialized{' '}
+            Senior{' '}
             <span className="font-medium text-neon">
-              React Native &amp; Expo
+              React Native &amp; Native Build
             </span>{' '}
-            developer. {profile.tagline}
+            Engineer. {profile.tagline}
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={item} className="mt-8 flex flex-wrap gap-4">
+          <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
             <Magnetic>
               <a
                 href="#work"
                 className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-neon to-neon-deep px-6 py-3.5 font-semibold text-base-950 shadow-glow transition-transform"
               >
-                View my work
+                View production work
                 <ArrowDown
                   size={18}
                   className="transition-transform group-hover:translate-y-0.5"
                 />
               </a>
             </Magnetic>
+            {onOpenResume && (
+              <Magnetic>
+                <button
+                  onClick={onOpenResume}
+                  data-cursor="hover"
+                  className="flex cursor-pointer items-center gap-2 rounded-xl border border-neon/40 bg-neon/10 px-5 py-3.5 font-semibold text-neon transition-colors hover:bg-neon hover:text-base-950"
+                >
+                  <FileText size={18} />
+                  <span>View Resume</span>
+                </button>
+              </Magnetic>
+            )}
             <Magnetic>
               <a
                 href="#contact"
-                className="rounded-xl border border-white/15 px-6 py-3.5 font-semibold text-white transition-colors hover:border-neon/50 hover:text-neon"
+                className="rounded-xl border border-white/15 px-5 py-3.5 font-semibold text-white transition-colors hover:border-neon/50 hover:text-neon"
               >
                 Get in touch
               </a>
             </Magnetic>
           </motion.div>
-
-          {/* Marquee of the stack */}
-          <motion.div
-            variants={item}
-            className="mt-12 flex flex-wrap gap-2"
-          >
-            {techStack.slice(0, 6).map((t) => (
-              <span
-                key={t}
-                className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 font-mono text-xs text-slate-400"
-              >
-                {t}
-              </span>
-            ))}
-          </motion.div>
         </motion.div>
 
         {/* Right — 3D + portrait */}
         <div className="relative h-[380px] sm:h-[460px] md:h-[560px]">
-          <Suspense
-            fallback={
-              <div className="absolute inset-0 grid place-items-center">
-                <div className="h-40 w-40 animate-pulse rounded-full bg-neon/10 blur-2xl" />
-              </div>
-            }
-          >
-            <ThreeCanvas />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense
+              fallback={
+                <div className="absolute inset-0 grid place-items-center">
+                  <div className="h-40 w-40 animate-pulse rounded-full bg-neon/10 blur-2xl" />
+                </div>
+              }
+            >
+              <ThreeCanvas />
+            </Suspense>
+          </ErrorBoundary>
 
           {/* Large floating portrait layered over the scene */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute bottom-2 left-0 z-20 sm:bottom-4 sm:left-2"
+            className="absolute bottom-2 left-2 z-20 sm:bottom-4 sm:left-4"
             data-cursor="hover"
           >
             <div className="relative">
               {/* Glow ring behind the portrait */}
-              <div className="absolute -inset-2 rounded-[2rem] bg-gradient-to-br from-neon/40 via-transparent to-amber-glow/30 blur-xl" />
-              <div className="relative overflow-hidden rounded-[1.75rem] border border-white/15 bg-base-900/60 p-1.5 backdrop-blur-xl shadow-card">
+              <div className="absolute -inset-2 rounded-[2.2rem] bg-gradient-to-br from-neon/40 via-transparent to-amber-glow/35 blur-xl" />
+              <div className="relative overflow-hidden rounded-[1.85rem] border border-white/20 bg-base-900/70 p-2 backdrop-blur-xl shadow-card">
                 <img
                   src={profile.image}
                   alt={profile.name}
-                  className="h-40 w-32 rounded-[1.4rem] object-cover object-top ring-1 ring-white/10 sm:h-52 sm:w-40 md:h-60 md:w-48"
+                  className="h-56 w-44 rounded-[1.5rem] object-cover object-top ring-2 ring-white/15 sm:h-60 sm:w-44 md:h-64 md:w-50"
                   loading="eager"
                 />
                 {/* Name plate */}
-                <div className="absolute inset-x-1.5 bottom-1.5 rounded-b-[1.4rem] rounded-t-md bg-gradient-to-t from-base-950/95 via-base-950/70 to-transparent px-3 pb-3 pt-6">
-                  <p className="text-sm font-bold leading-tight text-white">
+                <div className="absolute inset-x-2 bottom-2 rounded-b-[1.5rem] rounded-t-lg bg-gradient-to-t from-base-950/95 via-base-950/80 to-transparent px-3.5 pb-3.5 pt-7">
+                  <p className="text-base font-bold leading-tight text-white sm:text-lg">
                     {profile.name}
                   </p>
-                  <p className="font-mono text-[10px] text-neon">{profile.role}</p>
+                  <p className="font-mono text-xs font-semibold text-neon mt-0.5">{profile.role}</p>
                 </div>
-              </div>
-              {/* Status pill */}
-              <div className="absolute -right-3 top-3 flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-500/15 px-2.5 py-1 backdrop-blur-md">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-                <span className="text-[10px] font-medium text-emerald-300">Open to work</span>
               </div>
             </div>
           </motion.div>

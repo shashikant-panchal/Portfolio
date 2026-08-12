@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react'
+import { Menu, X, Github, Linkedin, Mail, FileText } from 'lucide-react'
 import Magnetic from './ui/Magnetic'
 import { profile } from '../data/portfolio'
 
 const links = [
   { label: 'About', href: '#about' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Experience', href: '#experience' },
   { label: 'Work', href: '#work' },
+  { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -16,7 +19,11 @@ const socialLinks = [
   { label: 'Email', href: `mailto:${profile.email}`, icon: Mail },
 ]
 
-export default function Navbar() {
+interface NavbarProps {
+  onOpenResume?: () => void
+}
+
+export default function Navbar({ onOpenResume }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -48,22 +55,38 @@ export default function Navbar() {
               className="relative h-10 w-10 rounded-full border-2 border-neon/70 object-cover object-top shadow-glow"
             />
           </span>
-          <span className="hidden font-display text-sm font-semibold tracking-wide text-white sm:block">
-            {profile.name}
-          </span>
+          <div className="hidden flex-col sm:flex">
+            <span className="font-display text-sm font-semibold tracking-wide text-white">
+              {profile.name}
+            </span>
+            <span className="font-mono text-[10px] text-neon">
+              Software Engineer
+            </span>
+          </div>
         </a>
 
         {/* Desktop links */}
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:text-neon"
+              className="rounded-lg px-3 py-2 text-xs font-mono text-slate-300 transition-colors hover:text-neon"
             >
               {l.label}
             </a>
           ))}
+
+          {onOpenResume && (
+            <button
+              onClick={onOpenResume}
+              data-cursor="hover"
+              className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-lg border border-neon/40 bg-neon/10 px-3 py-1.5 font-mono text-xs font-semibold text-neon transition-all hover:bg-neon hover:text-base-950"
+            >
+              <FileText size={13} />
+              <span>Resume</span>
+            </button>
+          )}
 
           {/* Easily accessible social links */}
           <span className="mx-2 h-5 w-px bg-white/10" />
@@ -76,23 +99,35 @@ export default function Navbar() {
                   rel="noreferrer"
                   aria-label={s.label}
                   title={s.label}
-                  className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-300 transition-colors hover:border-neon/50 hover:bg-neon/10 hover:text-neon"
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-300 transition-colors hover:border-neon/50 hover:bg-neon/10 hover:text-neon"
                 >
-                  <s.icon size={17} />
+                  <s.icon size={16} />
                 </a>
               </Magnetic>
             ))}
           </div>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="grid h-10 w-10 place-items-center rounded-xl glass md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X size={18} /> : <Menu size={18} />}
-        </button>
+        {/* Mobile toggle & Resume button */}
+        <div className="flex items-center gap-2 lg:hidden">
+          {onOpenResume && (
+            <button
+              onClick={onOpenResume}
+              className="flex items-center gap-1.5 rounded-xl border border-neon/40 bg-neon/10 px-3 py-2 font-mono text-xs font-semibold text-neon"
+            >
+              <FileText size={14} />
+              <span>Resume</span>
+            </button>
+          )}
+
+          <button
+            className="grid h-10 w-10 place-items-center rounded-xl glass"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}
@@ -102,14 +137,14 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
-            className="absolute left-4 right-4 top-20 z-50 rounded-2xl glass-strong p-4 md:hidden"
+            className="absolute left-4 right-4 top-20 z-50 rounded-2xl glass-strong p-4 lg:hidden"
           >
             {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-lg px-4 py-3 text-base font-medium text-slate-200 hover:bg-white/5 hover:text-neon"
+                className="block rounded-lg px-4 py-2.5 font-mono text-sm text-slate-200 hover:bg-white/5 hover:text-neon"
               >
                 {l.label}
               </a>
@@ -137,3 +172,4 @@ export default function Navbar() {
     </motion.header>
   )
 }
+
