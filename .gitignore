@@ -20,6 +20,7 @@ dist-ssr
 Shashikant_P.pdf
 *.pdf
 !**/Shashikant_Panchal_Resume.pdf
+!**/Shashikant-P.pdf
 *.resume
 
 # Editor directories and files

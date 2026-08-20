@@ -90,8 +90,8 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           )}
 
           <a
-            href="/Shashikant_Panchal_Resume.pdf"
-            download="Shashikant_Panchal_Resume.pdf"
+            href="/Shashikant-P.pdf"
+            download="Shashikant-P.pdf"
             onClick={downloadResume}
             data-cursor="hover"
             className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/20 bg-white/[0.05] px-3 py-1.5 font-mono text-xs font-semibold text-slate-200 transition-all hover:border-neon/50 hover:bg-neon/10 hover:text-neon"
@@ -133,8 +133,8 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           )}
 
           <a
-            href="/Shashikant_Panchal_Resume.pdf"
-            download="Shashikant_Panchal_Resume.pdf"
+            href="/Shashikant-P.pdf"
+            download="Shashikant-P.pdf"
             onClick={downloadResume}
             className="flex items-center gap-1 rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 font-mono text-xs font-semibold text-white"
           >

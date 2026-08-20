@@ -1,12 +1,10 @@
-import resumePdf from '../assets/Shashikant_Panchal_Resume.pdf'
-
 export const downloadResume = async (e?: React.MouseEvent) => {
   if (e) {
     e.preventDefault()
   }
 
-  const fileName = 'Shashikant_Panchal_Resume.pdf'
-  const targetUrl = resumePdf || '/Shashikant_Panchal_Resume.pdf'
+  const fileName = 'Shashikant-P.pdf'
+  const targetUrl = '/Shashikant-P.pdf'
 
   try {
     // Fetch asset as a blob for guaranteed direct file download (avoids browser opening in page or showing 404/not available)
