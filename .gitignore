@@ -19,6 +19,7 @@ dist-ssr
 # Private source material — not part of the site, never expose
 Shashikant_P.pdf
 *.pdf
+!**/Shashikant_Panchal_Resume.pdf
 *.resume
 
 # Editor directories and files
