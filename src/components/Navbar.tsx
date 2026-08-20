@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Github, Linkedin, Mail, FileText } from 'lucide-react'
+import { Menu, X, Github, Linkedin, Mail, FileText, Download } from 'lucide-react'
 import Magnetic from './ui/Magnetic'
 import { profile } from '../data/portfolio'
 
@@ -84,9 +84,19 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
               className="ml-2 flex cursor-pointer items-center gap-1.5 rounded-lg border border-neon/40 bg-neon/10 px-3 py-1.5 font-mono text-xs font-semibold text-neon transition-all hover:bg-neon hover:text-base-950"
             >
               <FileText size={13} />
-              <span>Resume</span>
+              <span>View Resume</span>
             </button>
           )}
+
+          <a
+            href="/Shashikant_Panchal_Resume.pdf"
+            download="Shashikant_Panchal_Resume.pdf"
+            data-cursor="hover"
+            className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/20 bg-white/[0.05] px-3 py-1.5 font-mono text-xs font-semibold text-slate-200 transition-all hover:border-neon/50 hover:bg-neon/10 hover:text-neon"
+          >
+            <Download size={13} />
+            <span>Download</span>
+          </a>
 
           {/* Easily accessible social links */}
           <span className="mx-2 h-5 w-px bg-white/10" />
@@ -116,9 +126,17 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
               className="flex items-center gap-1.5 rounded-xl border border-neon/40 bg-neon/10 px-3 py-2 font-mono text-xs font-semibold text-neon"
             >
               <FileText size={14} />
-              <span>Resume</span>
+              <span>View</span>
             </button>
           )}
+
+          <a
+            href="/Shashikant_Panchal_Resume.pdf"
+            download="Shashikant_Panchal_Resume.pdf"
+            className="flex items-center gap-1 rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 font-mono text-xs font-semibold text-white"
+          >
+            <Download size={14} />
+          </a>
 
           <button
             className="grid h-10 w-10 place-items-center rounded-xl glass"

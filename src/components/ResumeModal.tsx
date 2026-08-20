@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Printer, Mail, Phone, MapPin, Github, Linkedin } from 'lucide-react'
+import { X, Printer, Download, Mail, Phone, MapPin, Github, Linkedin } from 'lucide-react'
 import { profile, categorizedSkills, experience, projects, education } from '../data/portfolio'
 
 interface ResumeModalProps {
@@ -35,13 +35,22 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               </span>
             </div>
             <div className="flex items-center gap-2">
+              <a
+                href="/Shashikant_Panchal_Resume.pdf"
+                download="Shashikant_Panchal_Resume.pdf"
+                data-cursor="hover"
+                className="flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-neon to-neon-deep px-4 py-2 text-xs font-bold text-base-950 shadow-glow transition-transform hover:scale-105"
+              >
+                <Download size={15} />
+                <span>Download PDF</span>
+              </a>
               <button
                 onClick={handlePrint}
                 data-cursor="hover"
-                className="flex cursor-pointer items-center gap-2 rounded-xl bg-neon px-4 py-2 text-xs font-bold text-base-950 shadow-glow transition-transform hover:scale-105"
+                className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-3.5 py-2 text-xs font-bold text-white transition-all hover:bg-white/20"
               >
                 <Printer size={15} />
-                <span>Print / Save PDF</span>
+                <span className="hidden sm:inline">Print</span>
               </button>
               <button
                 onClick={onClose}
