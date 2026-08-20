@@ -91,3 +91,18 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Print styling optimization */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    cursor: auto !important;
+  }
+  header, main, footer, #custom-cursor {
+    display: none !important;
+  }
+  .fixed {
+    position: static !important;
+  }
+}

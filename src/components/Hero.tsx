@@ -4,6 +4,7 @@ import { ArrowDown, Sparkles, FileText, Download } from 'lucide-react'
 import Magnetic from './ui/Magnetic'
 import ErrorBoundary from './ui/ErrorBoundary'
 import { profile } from '../data/portfolio'
+import { downloadResume } from '../utils/downloadResume'
 
 // The 3D scene is code-split so the hero copy paints instantly.
 const ThreeCanvas = lazy(() => import('./three/ThreeCanvas'))
@@ -93,6 +94,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               <a
                 href="/Shashikant_Panchal_Resume.pdf"
                 download="Shashikant_Panchal_Resume.pdf"
+                onClick={downloadResume}
                 data-cursor="hover"
                 className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/20 bg-white/[0.05] px-4 py-3 font-semibold text-slate-200 transition-colors hover:border-neon/50 hover:bg-neon/10 hover:text-neon"
               >

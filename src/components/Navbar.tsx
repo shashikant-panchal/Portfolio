@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Github, Linkedin, Mail, FileText, Download } from 'lucide-react'
 import Magnetic from './ui/Magnetic'
 import { profile } from '../data/portfolio'
+import { downloadResume } from '../utils/downloadResume'
 
 const links = [
   { label: 'About', href: '#about' },
@@ -91,6 +92,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           <a
             href="/Shashikant_Panchal_Resume.pdf"
             download="Shashikant_Panchal_Resume.pdf"
+            onClick={downloadResume}
             data-cursor="hover"
             className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-white/20 bg-white/[0.05] px-3 py-1.5 font-mono text-xs font-semibold text-slate-200 transition-all hover:border-neon/50 hover:bg-neon/10 hover:text-neon"
           >
@@ -133,6 +135,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           <a
             href="/Shashikant_Panchal_Resume.pdf"
             download="Shashikant_Panchal_Resume.pdf"
+            onClick={downloadResume}
             className="flex items-center gap-1 rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 font-mono text-xs font-semibold text-white"
           >
             <Download size={14} />

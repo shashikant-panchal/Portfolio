@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Printer, Download, Mail, Phone, MapPin, Github, Linkedin } from 'lucide-react'
 import { profile, categorizedSkills, experience, projects, education } from '../data/portfolio'
+import { downloadResume } from '../utils/downloadResume'
 
 interface ResumeModalProps {
   isOpen: boolean
@@ -38,6 +39,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               <a
                 href="/Shashikant_Panchal_Resume.pdf"
                 download="Shashikant_Panchal_Resume.pdf"
+                onClick={downloadResume}
                 data-cursor="hover"
                 className="flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-neon to-neon-deep px-4 py-2 text-xs font-bold text-base-950 shadow-glow transition-transform hover:scale-105"
               >
