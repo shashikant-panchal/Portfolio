@@ -451,7 +451,7 @@ export const experience: ExperienceItem[] = [
   {
     company: 'Mufeed Products and Services Pvt Ltd',
     role: 'React Native Developer',
-    period: 'Dec 2022 – Oct 2023',
+    period: 'Jul 2022 – Oct 2023',
     location: 'Bidar, Karnataka, India',
     summary:
       'Architected and delivered full-featured SaaS mobile platform from ground up, implementing real-time cataloging, payment processing, FCM push notification engines, and multi-tenant cloud backends.',
